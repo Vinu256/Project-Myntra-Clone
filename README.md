@@ -181,7 +181,7 @@ For DockerHub
    -  Select Kind as Username and Password
    -  Give the username and password and give your `Dockerhub username` and `Dockerhub Password` id is `docker`.
    -  Click Save
-<img width="1897" height="621" alt="image" src="https://github.com/user-attachments/assets/f4071a22-b4cc-4852-bcff-b02e83886fdc" />
+
 
 
 - Jenkins Pipeline
@@ -202,7 +202,7 @@ pipeline {
         DOCKER_CREDENTIALS_ID = 'docker-cred'
         MANIFEST_FILE         = 'k8s/deployment.yml'
         GIT_REPO_NAME         = 'Project-Myntra-Clone'
-        GIT_USER_NAME         = 'devopsprofile'
+        GIT_USER_NAME         = 'itsdevopsprofile'
         GIT_EMAIL             = 'itsdevopsprofile@gmail.com'
     }
 
