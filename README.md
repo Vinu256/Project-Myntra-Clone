@@ -1,10 +1,11 @@
+
 # MYntra Clone
 
 Prerequisites:
 
    -  NodeJS application code hosted on a Git repository
    -  Jenkins server
-   -  EKScluster
+   -  EKS cluster
    -  Argo CD
       
 Tools Required:
@@ -180,6 +181,7 @@ For DockerHub
    -  Select Kind as Username and Password
    -  Give the username and password and give your `Dockerhub username` and `Dockerhub Password` id is `docker`.
    -  Click Save
+<img width="1897" height="621" alt="image" src="https://github.com/user-attachments/assets/f4071a22-b4cc-4852-bcff-b02e83886fdc" />
 
 
 - Jenkins Pipeline
@@ -195,13 +197,13 @@ pipeline {
 
     environment {
         SCANNER_HOME          = tool 'sonar-scanner'
-        DOCKER_IMAGE          = 'myntra'
-        DOCKER_REGISTRY       = 'abhipraydh96'
+        DOCKER_IMAGE          = 'myntra-clone'
+        DOCKER_REGISTRY       = 'devopsprofile'
         DOCKER_CREDENTIALS_ID = 'docker-cred'
         MANIFEST_FILE         = 'k8s/deployment.yml'
         GIT_REPO_NAME         = 'Project-Myntra-Clone'
-        GIT_USER_NAME         = 'itsdevopsprofile'
-        GIT_EMAIL             = 'abhipraydh96@gmail.com'
+        GIT_USER_NAME         = 'devopsprofile'
+        GIT_EMAIL             = 'itsdevopsprofile@gmail.com'
     }
 
     stages {
@@ -284,8 +286,10 @@ pipeline {
 
 ### Create EKS Cluster
 ````
-https://github.com/itsdevopsprofile/DevOps_Notes/blob/main/Kubernetes/eks-cluster.md
+https://github.com/itsdevopsprofile/Kubernetes/blob/main/eks-cluster.md
 ````
+**Note:** check your region while creating eks cluster
+
 ### Configure ArgoCD
 
 
@@ -355,22 +359,35 @@ kubectl get secret argocd-initial-admin-secret -n argocd \
 
 Click on ``CREATE APPLICATION``
    
-![Screenshot ](https://i.imgur.com/t31vqVp.png)
+<img width="1891" height="827" alt="image" src="https://github.com/user-attachments/assets/5feb2a46-aa59-4c75-bb57-9254e1fca40c" />
+<img width="1423" height="425" alt="image" src="https://github.com/user-attachments/assets/a831ba69-c107-4707-9a02-386bbf91fd5e" />
+<img width="1427" height="351" alt="image" src="https://github.com/user-attachments/assets/b41386f7-da65-4920-b951-b390255e025e" />
 
-![Screenshot ](https://i.imgur.com/AQ0sFiS.png)
-   
-![Screenshot ](https://i.imgur.com/NTMNyuN.png)
+
+
    
 Now click ``CREATE``
    
-![Screenshot ](https://i.imgur.com/sZvRRas.png)
+<img width="568" height="440" alt="image" src="https://github.com/user-attachments/assets/14fd8a68-2215-4eab-a23f-5e82ac6b7243" />
+
 
 ![image](https://github.com/user-attachments/assets/cd0ae77c-629a-4e90-8c67-a0c25c3311ba)
 
 ![image](https://github.com/user-attachments/assets/6696696c-524e-4bb0-8b82-4265018f4950)
 
 ### (Monitoring)Install Prometheus using Helm:
-
+- installl helm
+````
+curl https://baltocdn.com/helm/signing.asc | gpg --dearmor | sudo tee /usr/share/keyrings/helm.gpg > /dev/null
+sudo apt-get install apt-transport-https --yes
+echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/helm.gpg] https://baltocdn.com/helm/stable/debian/ all main" | sudo tee /etc/apt/sources.list.d/helm-stable-debian.list
+sudo apt-get update
+sudo apt-get install helm
+````
+or
+````
+sudo snap install helm --classic
+````
 - Set up Prometheus and Grafana to monitor your application.
 
 - Add helm repo
@@ -386,7 +403,19 @@ helm repo update
 ```
 
 - Install prometheus controller
-
+### List StorageClasses:
+````
+kubectl get storageclass
+````
+###  install a basic dynamic provisioner
+````
+kubectl apply -f https://raw.githubusercontent.com/rancher/local-path-provisioner/master/deploy/local-path-storage.yaml
+````
+### Then patch it as default:
+````
+kubectl patch storageclass local-path -p '{"metadata": {"annotations":{"storageclass.kubernetes.io/is-default-class":"true"}}}'
+````
+---
 ```
 helm install prometheus prometheus-community/prometheus
 ```
@@ -480,4 +509,9 @@ kubectl get secret --namespace default grafana -o jsonpath="{.data.admin-passwor
     - Past the Dashboard ID `15661` and click on load
     - Select the default Prometheus
     - Click on Import
+      
+<img width="1895" height="940" alt="image" src="https://github.com/user-attachments/assets/4332a9a7-e018-4738-98ce-28d4aa6196a2" />
 
+<img width="1912" height="957" alt="image" src="https://github.com/user-attachments/assets/13e905b8-b640-4369-9394-292446f8b7c8" />
+
+---
