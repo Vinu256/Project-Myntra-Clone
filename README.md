@@ -1,13 +1,7 @@
 
-# MYntra Clone
+# Myntra Clone
 
-Prerequisites:
 
-   -  NodeJS application code hosted on a Git repository
-   -  Jenkins server
-   -  EKS cluster
-   -  Argo CD
-      
 Tools Required:
     
    - Java
