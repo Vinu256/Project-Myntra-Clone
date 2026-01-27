@@ -7,11 +7,11 @@ pipeline{
     environment {
         SCANNER_HOME=tool 'sonar-scanner'
         DOCKER_IMAGE = "myntra" // Define your Docker image name here
-        DOCKER_REGISTRY = "vaibhavbankar" // Define your Docker registry here
+        DOCKER_REGISTRY = "devopsprofile" // Define your Docker registry here
         DOCKER_CREDENTIALS_ID = "docker" // Replace with your actual credentials ID
         MANIFEST_FILE = "deployment-service.yml" // Path to your manifest file
-        GIT_REPO_NAME = "NodeJS_web_application_deploy_on_Kind"
-        GIT_USER_NAME = "vaibhavbankar111"
+        GIT_REPO_NAME = "itsdevpsprofile"
+        GIT_USER_NAME = "itsdevpsprofile"
     }
     stages {
         stage('clean workspace'){
@@ -21,7 +21,7 @@ pipeline{
         }
         stage('Checkout from Git'){
             steps{
-                git branch: 'main', url: 'https://github.com/vaibhavbankar111/NodeJS_web_application_deploy_on_Kind.git'
+                git branch: 'main', url: 'https://github.com/itsdevpsprofile/itsdevpsprofile.git'
             }
         }
         stage("Sonarqube Analysis "){
